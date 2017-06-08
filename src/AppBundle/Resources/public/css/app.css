@@ -1,3 +1,8 @@
 #map {
     height: 833px;
 }
+
+.btn.btn-success.pull-right, .btn.btn-warning.pull-right {
+    margin-top: -8px;
+    margin-left: 10px;
+}

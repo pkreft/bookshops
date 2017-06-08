@@ -5,7 +5,7 @@
         <title>{% block title %}Bookshops{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('/assets/dest/css/app.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('/assets/dist/css/app.min.css') }}">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
@@ -13,7 +13,7 @@
             <script src="{{ asset('/bower_components/angular/angular.min.js') }}"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-            <script src="{{ asset('/assets/dest/js/scripts.min.js') }}"></script>
+            <script src="{{ asset('/assets/dist/js/scripts.min.js') }}"></script>
         {% endblock %}
     </head>
     <body>
