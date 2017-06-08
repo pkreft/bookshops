@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Bookshops</h3>
+        </div>
+        <div class="panel-body" ng-controller="AppMapController">
+            <div id="map"></div>
+        </div>
+    </div>
+    <pre class="hidden">
+        <div>
+            name: <b>[%name]</b>
+            <div>bestsellers:</div>
+            [%books]
+        </div>
+    </pre>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOApVDLdVd_IF2XM6rycgZdGkhcwfj-ZE&callback=mapsLoaded">
+    </script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+  "name": "sii",
+  "directory": "web/",
+  "componentsDirectory": "web/",
+  "dependencies": {
+    "angular": "1.6.4",
+    "bootstrap": "~3.1.1"
+  }
+}

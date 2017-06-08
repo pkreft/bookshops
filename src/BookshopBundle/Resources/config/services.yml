@@ -1,0 +1,17 @@
+services:
+
+    bookshop.repository.bookshop:
+        class: BookshopBundle\Repository\BookshopRepository
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: [BookshopBundle:Bookshop]
+
+    bookshop.repository.book:
+        class: BookshopBundle\Repository\BookRepository
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: [BookshopBundle:Book]
+
+    bookshop.form.handler.bookshop:
+        class: BookshopBundle\Form\Handler\BookshopHandler
+        arguments:
+            - '@form.factory'
+            - '@doctrine.orm.entity_manager'
