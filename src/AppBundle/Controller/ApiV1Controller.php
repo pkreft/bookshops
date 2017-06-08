@@ -6,15 +6,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use UserBundle\Entity\User;
 
 /**
- * @Route("/api", options={"expose"=true})
+ * @Route("/api/v1", options={"expose"=true})
+ * @Method({"GET"})
  */
-class ApiController extends Controller
+class ApiV1Controller extends Controller
 {
     /**
-     * @Route("/v1/bookshops", name="api_bookshops")
-     * @Method({"GET"})
+     * @Route("/bookshops", name="api_bookshops")
      *
      * @return JsonResponse
      */
@@ -30,6 +31,7 @@ class ApiController extends Controller
                 $bookshopsRepository->find($bookshop['id'])->getBooks(true)->slice(0, 5)
             );
         }
+        $data['auth'] = $this->isGranted(User::ROLE_ADMIN, $this->getUser());
 
         return new JsonResponse($data);
     }

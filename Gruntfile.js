@@ -7,20 +7,20 @@ module.exports = function(grunt) {
                     'app/Resources/public/js/**/*.js',
                     'src/AppBundle/Resources/public/js/**/*.js',
                 ],
-                dest: 'web/assets/dest/js/scripts.js'
+                dest: 'web/assets/dist/js/scripts.js'
             },
         },
         uglify: {
             my_target: {
                 files: {
-                    'web/assets/dest/js/scripts.min.js': ['web/assets/dest/js/scripts.js']
+                    'web/assets/dist/js/scripts.min.js': ['web/assets/dist/js/scripts.js']
                 }
             }
         },
         cssmin: {
             target: {
                 files: {
-                    'web/assets/dest/css/app.min.css': [
+                    'web/assets/dist/css/app.min.css': [
                         'src/AppBundle/Resources/public/css/**/*.css',
                     ],
                 }

@@ -18,7 +18,9 @@ function initMap() {
             zoom: 10,
             center: {lat: 54.3610873, lng: 18.6900271}
         }),
-        popupTemplate = angular.element(document).find('pre').html();
+        popupTemplate = angular.element(document).find('pre').html(),
+        auth = locations.auth;
+        delete locations.auth;
 
         var markers = [],
             template;
@@ -34,8 +36,17 @@ function initMap() {
             });
 
             var marker = new google.maps.Marker({
+                id: location.id,
                 position: location,
+                draggable: auth ? true : false
             });
+            if (auth) {
+                marker.addListener('dragend', function(e) {
+                    // this.setIcon('http://maps.gstatic.com/mapfiles/markers2/icon_green.png');
+                    this.setIcon('https://mt.google.com/vt/icon?psize=20&font=fonts/Roboto-Regular.ttf&color=ff330000&name=icons/spotlight/spotlight-waypoint-a.png&ax=44&ay=48&scale=1&text=%E2%80%A2');
+                    dispatchMarkerDraggedEvent(e, this.id);
+                });
+            }
 
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
@@ -48,4 +59,17 @@ function initMap() {
             // {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
             {imagePath: '/assets/images/markerclusterer/m'});
     }
+}
+
+function dispatchMarkerDraggedEvent(e, id) {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent('markerDragged', true, true);
+    event.eventName = 'markerDragged';
+    event.data = {
+        lat : e.latLng.lat(),
+        lng : e.latLng.lng(),
+        id : id,
+    };
+
+    document.dispatchEvent(event);
 }
