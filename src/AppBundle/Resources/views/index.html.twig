@@ -2,9 +2,11 @@
 
 {% block body %}
     <div class="panel panel-default" ng-controller="AppMapController">
-        <div class="panel-heading">
+        <div class="panel-heading main">
             <h3 class="panel-title">
                 Bookshops
+                <input ng-change="typing();" ng-model="search" class="form-control search" type="text" placeholder="Search..." />
+                <span ng-if="typed || searching" class="glyphicon glyphicon-refresh glyphicon-spin" aria-hidden="true"></span>
                 <span ng-show="modifiedMarkers.length">
                     <div ng-click="dismissNewMarkers()" class="btn btn-warning pull-right">Dismiss changes</div>
                     <div ng-click="submitMarkers()" class="btn btn-success pull-right">Submit new positions</div>

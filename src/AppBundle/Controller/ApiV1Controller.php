@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 
 /**
@@ -17,13 +18,14 @@ class ApiV1Controller extends Controller
     /**
      * @Route("/bookshops", name="api_bookshops")
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function indexAction() : JsonResponse
+    public function indexAction(Request $request) : JsonResponse
     {
         $bookshopsRepository = $this->get('bookshop.repository.bookshop');
         $serializer = $this->get('jms_serializer');
-        $bookshops = $bookshopsRepository->findAll();
+        $bookshops = $bookshopsRepository->findWithParam($request->query->get('search'));
         $data = $serializer->toArray($bookshops);
 
         foreach ($data as $id => $bookshop) {
