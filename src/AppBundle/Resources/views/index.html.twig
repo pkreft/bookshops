@@ -6,15 +6,18 @@
             <h3 class="panel-title">
                 Bookshops
                 <input ng-change="typing();" ng-model="search" class="form-control search" type="text" placeholder="Search..." />
-                <span ng-if="typed || searching" class="glyphicon glyphicon-refresh glyphicon-spin" aria-hidden="true"></span>
+                <span ng-if="typed || searching">{% include '@App/includes/loader.html.twig' with {'css': 'position: absolute; top: 77px; left: 290px;'} %}</span>
                 <span ng-show="modifiedMarkers.length">
                     <div ng-click="dismissNewMarkers()" class="btn btn-warning pull-right">Dismiss changes</div>
                     <div ng-click="submitMarkers()" class="btn btn-success pull-right">Submit new positions</div>
                 </span>
             </h3>
         </div>
-        <div class="panel-body">
-            <div id="map"></div>
+        <div class="panel-body map">
+            <div class="col-sm-12">
+                {% include '@App/includes/loading_cover.html.twig' with {'ngshow': 'refreshing'} %}
+                <div id="map"></div>
+            </div>
         </div>
     </div>
     <pre class="hidden">
@@ -22,6 +25,7 @@
             name: <b>[%name]</b>
             <div>bestsellers:</div>
             [%books]
+            <a onclick="more('[%marker]')">See more</a>
         </div>
     </pre>
 {% endblock %}

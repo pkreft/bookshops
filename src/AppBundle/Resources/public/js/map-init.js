@@ -30,7 +30,9 @@ function initMap() {
             angular.forEach(location.books, function(book) {
                books += '<div> - ' + book.title + '</div>';
             });
-            template = template.replace('[%books]', books)
+            template = template
+                .replace('[%books]', books)
+                .replace('[%marker]', location.id);
             var infowindow = new google.maps.InfoWindow({
                 content: template
             });
@@ -62,14 +64,23 @@ function initMap() {
 }
 
 function dispatchMarkerDraggedEvent(e, id) {
-    var event = document.createEvent('HTMLEvents');
-    event.initEvent('markerDragged', true, true);
-    event.eventName = 'markerDragged';
-    event.data = {
+    var data = {
         lat : e.latLng.lat(),
         lng : e.latLng.lng(),
         id : id,
     };
+    dispatchEvent('markerDragged', data);
+}
+
+function more(locationId) {
+    dispatchEvent('showModal', locationId);
+}
+
+function dispatchEvent(name, data) {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent(name, true, true);
+    event.eventName = name;
+    event.data = data;
 
     document.dispatchEvent(event);
 }
