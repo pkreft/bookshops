@@ -30,6 +30,9 @@ module.exports = function(grunt) {
             images: {
                 expand: true, cwd: 'src/AppBundle/Resources/public/images', src: '**', dest: 'web/assets/images'
             },
+            html: {
+                expand: true, cwd: 'src/BookshopBundle/Resources/views/templates/', src: '**', dest: 'web/assets/templates'
+            },
         },
     });
     grunt.loadNpmTasks('grunt-contrib-uglify');

@@ -8,9 +8,11 @@ use Doctrine\ORM\EntityRepository;
 
 class BookshopRepository extends EntityRepository
 {
-    public function findWithParam(?string $search = null) : array
+    public function findWithParam(?string $search, ?int $id) : array
     {
-        if (!$search) {
+        if ($id) {
+            return [$this->find($id)];
+        } elseif (!$search) {
             return $this->findAll();
         }
         $alias = 'bs';

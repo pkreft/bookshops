@@ -16,21 +16,23 @@ use UserBundle\Entity\User;
 class ApiV1Controller extends Controller
 {
     /**
-     * @Route("/bookshops", name="api_bookshops")
+     * @Route("/bookshops/{id}", name="api_bookshops")
      *
+     * @param int $id
      * @param Request $request
      * @return JsonResponse
      */
-    public function indexAction(Request $request) : JsonResponse
+    public function indexAction(Request $request, ?int $id = null) : JsonResponse
     {
         $bookshopsRepository = $this->get('bookshop.repository.bookshop');
         $serializer = $this->get('jms_serializer');
-        $bookshops = $bookshopsRepository->findWithParam($request->query->get('search'));
+        $bookshops = $bookshopsRepository->findWithParam($request->query->get('search'), $id);
         $data = $serializer->toArray($bookshops);
 
-        foreach ($data as $id => $bookshop) {
-            $data[$id]['books'] = $serializer->toArray(
-                $bookshopsRepository->find($bookshop['id'])->getBooks(true)->slice(0, 5)
+        foreach ($data as $key => $bookshop) {
+            $books = $bookshopsRepository->find($bookshop['id'])->getBooks(true);
+            $data[$key]['books'] = $serializer->toArray(
+                 $id ? $books : $books->slice(0, 5)
             );
         }
         $data['auth'] = $this->isGranted(User::ROLE_ADMIN, $this->getUser());

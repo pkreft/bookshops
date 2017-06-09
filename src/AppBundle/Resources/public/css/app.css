@@ -18,9 +18,8 @@
     padding-bottom: 2px;
 }
 
-.glyphicon-spin {
-    -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
+.panel-body.map {
+    padding: 5px;
 }
 
 @-webkit-keyframes spin {
@@ -42,4 +41,21 @@
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+.custom-cover-modal {
+    background: #1A1A1A;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 100;
+    opacity: 0.6;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    width: 700px!important;
 }

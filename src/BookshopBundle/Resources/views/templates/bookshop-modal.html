@@ -1,0 +1,14 @@
+<p><b>{[ ngDialogData.location.name ]}</b></p>
+<p>Coordinates:
+    <ul>
+        <li>{[ ngDialogData.location.lat ]}</li>
+        <li>{[ ngDialogData.location.lng ]}</li>
+    </ul>
+</p>
+
+<p>Books available:</p>
+<ul class="list-group">
+    <li ng-repeat="book in ngDialogData.location.books" class="list-group-item">
+        {[ book.title ]} ({[ book.author ]})
+    </li>
+</ul>

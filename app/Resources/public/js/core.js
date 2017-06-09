@@ -1,4 +1,5 @@
 var app = angular.module('bookshops', [
+    'ngDialog'
 ]);
 
 app
