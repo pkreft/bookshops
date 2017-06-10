@@ -26,10 +26,13 @@ class LoadBookshopData extends AbstractFixture implements ContainerAwareInterfac
         $books = $this->container->get('bookshop.repository.book')->findAll();
 
         foreach ($this->getData() as $bookshop) {
+            $openHours = $this->getOpenHours();
             $bookshop = BookshopFactory::create(
                 $bookshop[0],
                 $bookshop[1],
-                $bookshop[2]
+                $bookshop[2],
+                $openHours['open'],
+                $openHours['close']
             );
             foreach ($books as $book) {
                 if (rand(1,3) % 3 == 0) {
@@ -47,6 +50,16 @@ class LoadBookshopData extends AbstractFixture implements ContainerAwareInterfac
         return 2;
     }
 
+    private function getOpenHours() : array
+    {
+        $open = rand(8, 11);
+
+        return [
+            'open' => $open . ':00',
+            'close' => ($open + rand(8, 12)) . ':00',
+        ];
+    }
+
     private function getData() : array
     {
         return [
@@ -59,7 +72,7 @@ class LoadBookshopData extends AbstractFixture implements ContainerAwareInterfac
             ['Podrecznik24.pl Gdańsk', 54.413688, 18.598673],
             ['Koliber', 54.375164, 18.613547],
             ['Polanglo', 54.378553, 18.605382],
-            ['English Unlimited', 54.378553, 18.605382],
+            ['English Unlimited', 54.380689, 18.604208],
             ['Księgarnia PWN PG', 54.371848, 18.619200],
             ['Medbook.pl', 54.366043, 18.628634],
             ['Ichtis. Księgarnia Karolicka', 54.349997, 18.651689],

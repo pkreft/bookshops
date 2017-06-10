@@ -1,5 +1,5 @@
 {
-  "name": "sii",
+  "name": "bookshops",
   "directory": "web/",
   "componentsDirectory": "web/",
   "dependencies": {

@@ -30,18 +30,32 @@ class Bookshop
     private $name;
 
     /**
-     * @ORM\Column(type="float", length=64)
+     * @ORM\Column(type="float")
      *
      * @var string
      */
     private $lat;
 
     /**
-     * @ORM\Column(type="float", length=64)
+     * @ORM\Column(type="float")
      *
      * @var string
      */
     private $lng;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     *
+     * @var string
+     */
+    private $openHour;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     *
+     * @var string
+     */
+    private $closeHour;
 
     /**
      * @Exclude
@@ -120,5 +134,29 @@ class Bookshop
             $this, $book, $amount
         );
         $this->books->add($bookRelation);
+    }
+
+    public function getOpenHour(): string
+    {
+        return $this->openHour;
+    }
+
+    public function setOpenHour(string $openHour): Bookshop
+    {
+        $this->openHour = $openHour;
+
+        return $this;
+    }
+
+    public function getCloseHour(): string
+    {
+        return $this->closeHour;
+    }
+
+    public function setCloseHour(string $closeHour): Bookshop
+    {
+        $this->closeHour = $closeHour;
+
+        return $this;
     }
 }
