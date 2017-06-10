@@ -9,3 +9,4 @@ Libs
 * Bootstrap 3
 * GoogleMaps
 * ngDialog
+* angular-ui-notification

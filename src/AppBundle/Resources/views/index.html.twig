@@ -8,7 +8,7 @@
                 <input ng-change="typing();" ng-model="search" class="form-control search" type="text" placeholder="Search..." />
                 <span ng-if="typed || searching">{% include '@App/includes/loader.html.twig' with {'css': 'position: absolute; top: 77px; left: 290px;'} %}</span>
                 <span>
-                    <input onkeyup="updateKm(this.value);" class="form-control km" type="number" placeholder="km" value="5" />
+                    <input onchange="updateKm(this.value);" onkeyup="updateKm(this.value);" class="form-control km" type="number" placeholder="km" value="5" />
                     <div onclick="radius(angular.element(this));" class="btn btn-default show-radius">Show within radius</div>
                 </span>
                 <span ng-show="modifiedMarkers.length">

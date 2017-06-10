@@ -19,17 +19,17 @@ class BookshopHandler
     /**
      * @var FormFactory
      */
-    public $formFactory;
+    private $formFactory;
 
     /**
      * @var FormInterface
      */
-    public $form;
+    private $form;
 
     /**
      * @var EntityManager
      */
-    public $entityManager;
+    private $entityManager;
 
     public function __construct(
         FormFactory $formFactory,
@@ -48,7 +48,7 @@ class BookshopHandler
         );
         $this->form->handleRequest($request);
 
-        if ($this->form->isValid()) {
+        if ($this->form->isSubmitted() && $this->form->isValid()) {
             $bookshop = $this->form->getData();
             $this->entityManager->persist($bookshop);
             $this->entityManager->flush();
