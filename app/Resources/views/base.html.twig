@@ -8,6 +8,7 @@
             <link rel="stylesheet" href="{{ asset('/assets/dist/css/app.min.css') }}">
             <link rel="stylesheet" href="{{ asset('/bower_components/ngDialog/css/ngDialog.css') }}">
             <link rel="stylesheet" href="{{ asset('/bower_components/ngDialog/css/ngDialog-theme-default.css') }}">
+            <link rel="stylesheet" href="{{ asset('/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css') }}">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -63,6 +64,7 @@
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
             <script src="{{ asset('/assets/dist/js/scripts.min.js') }}"></script>
             <script src="{{ asset('/bower_components/ngDialog/js/ngDialog.min.js') }}"></script>
+            <script src="{{ asset('/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -56,8 +56,15 @@
     bottom: 0px;
     z-index: 100;
     opacity: 0.6;
+}
+
+.map div .custom-cover-modal {
     margin-left: 15px;
     margin-right: 15px;
+}
+
+.custom-cover-modal.rounded {
+    border-radius: 5px;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {

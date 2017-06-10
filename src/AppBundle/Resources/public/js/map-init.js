@@ -15,7 +15,8 @@ var map,
     markers = [],
     popupTemplate = angular.element(document).find('pre').html(),
     markerCluster,
-    showClosest = false;
+    showClosest = false,
+    addMenu;
 
 function initMap() {
     if (locations && mapScriptReady) {
@@ -35,6 +36,16 @@ function initMap() {
                 showClosestMarkers(e.latLng);
             }
         });
+
+        if (auth) {
+            addMenu = new google.maps.InfoWindow({});
+            map.addListener('rightclick', function(e) {
+                var content = '<div><a onclick="addMarker(' + e.latLng.lat() + ',' + e.latLng.lng() + ');closeMenu();">Add marker here</a></div>';
+                addMenu.setContent(content);
+                addMenu.setPosition(e.latLng);
+                addMenu.open(map);
+            });
+        }
 
         angular.forEach(locations, function(location) {
             var infoWindow = new google.maps.InfoWindow({
@@ -64,6 +75,12 @@ function initMap() {
         markerCluster = new MarkerClusterer(map, markers,
             // {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
             {imagePath: '/assets/images/markerclusterer/m'});
+    }
+}
+
+var closeMenu = function() {
+    if (addMenu) {
+        addMenu.close();
     }
 }
 
@@ -97,6 +114,14 @@ function dispatchMarkerDraggedEvent(e, id) {
         id : id,
     };
     dispatchEvent('markerDragged', data);
+}
+
+function addMarker(lat, lng) {
+    var data = {
+        lat : lat,
+        lng : lng,
+    };
+    dispatchEvent('addMarker', data);
 }
 
 function more(locationId) {

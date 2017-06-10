@@ -5,6 +5,7 @@
   "dependencies": {
     "angular": "1.6.4",
     "bootstrap": "~3.1.1",
-    "ngDialog": "0.5.4"
+    "ngDialog": "0.5.4",
+    "angular-ui-notification": "0.3.6"
   }
 }

@@ -1,6 +1,6 @@
 app.controller("AppMapController",
-    ['$scope', '$http', '$document', '$interval', 'ngDialog',
-        function($scope, $http, $document, $interval, ngDialog) {
+    ['$scope', '$http', '$document', '$interval', 'ngDialog', '$httpParamSerializerJQLike', 'Notification',
+        function($scope, $http, $document, $interval, ngDialog, $httpParamSerializerJQLike, Notification) {
 
         $scope.refreshing = true;
         $scope.modifiedMarkers = [];
@@ -48,6 +48,7 @@ app.controller("AppMapController",
                 $scope.refreshing = true;
                 $http.post(Routing.generate('api_bookshops_position'), $scope.modifiedMarkers)
                     .then(function (response) {
+                        Notification.info('Successfully updated Bookshops');
                         $scope.modifiedMarkers = [];
                         $scope.search = '';
                         dispatchLocationsFetchedEvent(response.data);
@@ -97,5 +98,58 @@ app.controller("AppMapController",
                 $scope.typed = false;
             }
         }, 100);
+
+        var dialog;
+
+        $document[0].addEventListener('addMarker', function(e) {
+            $scope.refreshing = true;
+            if ($scope.auth) {
+                $http.post(Routing.generate('api_bookshops_form'), {}).then(
+                    function success(response) {
+                        $scope.refreshing = false;
+                        $scope.form = {
+                            'bookshop[_token]': response.data.csrf,
+                            'bookshop[lat]': e.data.lat,
+                            'bookshop[lng]': e.data.lng,
+                        }
+                        dialog = ngDialog.open({
+                            template: '/assets/templates/bookshop-add-modal.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                        });
+                    }, function error() {
+                    }
+                );
+            }
+        });
+
+        $scope.submit = function() {
+            if ($scope.auth) {
+                $scope.formErrors = [];
+                $scope.submiting = true;
+                $http.post(
+                    Routing.generate('api_bookshops_add'),
+                    $httpParamSerializerJQLike($scope.form),
+                    {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        }
+                    }
+                ).then(
+                    function (response) {
+                        Notification.info('Successfully added Bookshop');
+                        $scope.submiting = false;
+                        if (dialog) {
+                            dialog.close();
+                        }
+                        dispatchLocationsFetchedEvent(response.data);
+                    },
+                    function (response) {
+                        $scope.submiting = false;
+                        $scope.formErrors = response.data.errors;
+                    }
+                );
+            }
+        }
     }]
 );

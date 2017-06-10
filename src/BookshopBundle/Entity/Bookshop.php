@@ -75,7 +75,7 @@ class Bookshop
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -87,7 +87,7 @@ class Bookshop
         return $this;
     }
 
-    public function getLat(): float
+    public function getLat(): ?float
     {
         return $this->lat;
     }
@@ -99,7 +99,7 @@ class Bookshop
         return $this;
     }
 
-    public function getLng(): float
+    public function getLng(): ?float
     {
         return $this->lng;
     }
@@ -136,7 +136,7 @@ class Bookshop
         $this->books->add($bookRelation);
     }
 
-    public function getOpenHour(): string
+    public function getOpenHour(): ?string
     {
         return $this->openHour;
     }
@@ -148,7 +148,7 @@ class Bookshop
         return $this;
     }
 
-    public function getCloseHour(): string
+    public function getCloseHour(): ?string
     {
         return $this->closeHour;
     }
