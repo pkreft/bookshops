@@ -29,8 +29,17 @@ class ApiV0Controller extends Controller
     {
         /** @var Bookshop $bookshop */
         $data = json_decode($request->getContent());
+        $em = $this->get('doctrine.orm.entity_manager');
         foreach ($data as $bookshopData) {
-            if (is_int($bookshopData->id) && is_float($bookshopData->lat) && is_float($bookshopData->lng)) {
+            $id = property_exists($bookshopData, 'id') && is_int($bookshopData->id);
+            $coordinates = property_exists($bookshopData, 'lat') + property_exists($bookshopData, 'lng');
+            if ($id && $coordinates == 0) {
+                $em->remove($this->get('bookshop.repository.bookshop')->find($bookshopData->id));
+            } elseif ($id &&
+                $coordinates == 2 &&
+                is_float($bookshopData->lat) &&
+                is_float($bookshopData->lng)
+            ) {
                 $bookshop = $this->get('bookshop.repository.bookshop')->find($bookshopData->id);
                 $bookshop
                     ->setLat($bookshopData->lat)
@@ -39,7 +48,7 @@ class ApiV0Controller extends Controller
                 return new JsonResponse(['message' => 'error'], Response::HTTP_BAD_REQUEST);
             }
         }
-        $this->get('doctrine.orm.entity_manager')->flush();
+        $em->flush();
 
         return $this->forward('AppBundle:ApiV1:index');
     }
