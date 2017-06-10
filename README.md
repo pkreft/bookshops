@@ -8,3 +8,4 @@ Libs
 * Angular 1.6
 * Bootstrap 3
 * GoogleMaps
+* ngDialog

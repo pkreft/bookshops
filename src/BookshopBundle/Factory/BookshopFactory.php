@@ -9,12 +9,16 @@ class BookshopFactory
     static public function create(
         string $name,
         float $latitude,
-        float $longitude
+        float $longitude,
+        string $openHour,
+        string $closeHour
     ) : Bookshop
     {
         return (new Bookshop())
             ->setName($name)
             ->setLat($latitude)
-            ->setLng($longitude);
+            ->setLng($longitude)
+            ->setOpenHour($openHour)
+            ->setCloseHour($closeHour);
     }
 }

@@ -11,30 +11,26 @@ function mapsLoaded() {
     mapScriptReady = true;
     initMap()
 }
-
+var map,
+    markers = [],
+    popupTemplate = angular.element(document).find('pre').html(),
+    markerCluster;
 function initMap() {
     if (locations && mapScriptReady) {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
-            center: {lat: 54.3610873, lng: 18.6900271}
-        }),
-        popupTemplate = angular.element(document).find('pre').html(),
-        auth = locations.auth;
+        if (!map) {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: {lat: 54.3610873, lng: 18.6900271}
+            });
+        } else {
+            clearMarkers();
+        }
+        var auth = locations.auth;
         delete locations.auth;
 
-        var markers = [],
-            template;
         angular.forEach(locations, function(location) {
-            template = popupTemplate.replace('[%name]', location.name)
-            var books = '';
-            angular.forEach(location.books, function(book) {
-               books += '<div> - ' + book.title + '</div>';
-            });
-            template = template
-                .replace('[%books]', books)
-                .replace('[%marker]', location.id);
-            var infowindow = new google.maps.InfoWindow({
-                content: template
+            var infoWindow = new google.maps.InfoWindow({
+                content: renderTemplate(location)
             });
 
             var marker = new google.maps.Marker({
@@ -51,16 +47,34 @@ function initMap() {
             }
 
             marker.addListener('click', function() {
-                infowindow.open(map, marker);
+                infoWindow.open(map, marker);
             });
 
             markers.push(marker);
         });
 
-        var markerCluster = new MarkerClusterer(map, markers,
+        markerCluster = new MarkerClusterer(map, markers,
             // {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
             {imagePath: '/assets/images/markerclusterer/m'});
     }
+}
+
+function clearMarkers() {
+    markerCluster.clearMarkers();
+    markers = [];
+}
+
+function renderTemplate(location) {
+    var template = popupTemplate
+        .replace('[%name]', location.name)
+        .replace('[%marker]', location.id)
+        .replace('[%open_at]', location.open_hour + ' - ' + location.close_hour);
+    var books = '';
+    angular.forEach(location.books, function(book) {
+        books += '<div> - ' + book.title + '</div>';
+    });
+
+    return template.replace('[%books]', books);
 }
 
 function dispatchMarkerDraggedEvent(e, id) {
