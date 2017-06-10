@@ -10,7 +10,8 @@ app.controller("AppMapController",
                 dispatchLocationsFetchedEvent(response.data);
                 $scope.refreshing = false;
             }, function error() {
-
+                Notification.error('Initializing application failed.');
+                $scope.refreshing = false;
             }
         );
 
@@ -35,7 +36,7 @@ app.controller("AppMapController",
                         }
                     });
                 }, function error() {
-
+                    $scope.refreshing = false;
                 }
             );
         });
@@ -47,13 +48,18 @@ app.controller("AppMapController",
             if ($scope.auth) {
                 $scope.refreshing = true;
                 $http.post(Routing.generate('api_bookshops_position'), $scope.modifiedMarkers)
-                    .then(function (response) {
-                        Notification.info('Successfully updated Bookshops');
-                        $scope.modifiedMarkers = [];
-                        $scope.search = '';
-                        dispatchLocationsFetchedEvent(response.data);
-                        $scope.refreshing = false;
-                    });
+                    .then(
+                        function (response) {
+                            Notification.info('Successfully updated Bookshops');
+                            $scope.modifiedMarkers = [];
+                            $scope.search = '';
+                            dispatchLocationsFetchedEvent(response.data);
+                            $scope.refreshing = false;
+                        }, function () {
+                            Notification.error('Adjusting positions failed.');
+                            $scope.refreshing = false;
+                        }
+                    );
             }
         }
 
@@ -118,6 +124,7 @@ app.controller("AppMapController",
                             scope: $scope,
                         });
                     }, function error() {
+                        $scope.refreshing = false;
                     }
                 );
             }
@@ -151,5 +158,13 @@ app.controller("AppMapController",
                 );
             }
         }
+
+        $document[0].addEventListener('deleteMarker', function(e) {
+            if ($scope.auth) {
+                $scope.$apply(function($scope) {
+                    $scope.modifiedMarkers.push({id: e.data});
+                });
+            };
+        });
     }]
 );

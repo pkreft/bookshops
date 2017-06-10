@@ -63,6 +63,12 @@ function initMap() {
                     this.setIcon('https://mt.google.com/vt/icon?psize=20&font=fonts/Roboto-Regular.ttf&color=ff330000&name=icons/spotlight/spotlight-waypoint-a.png&ax=44&ay=48&scale=1&text=%E2%80%A2');
                     dispatchMarkerDraggedEvent(e, this.id);
                 });
+                marker.addListener('rightclick', function(e) {
+                    var content = '<div><a onclick="deleteMarker(' + this.id + ');closeMenu();">Delete marker</a></div>';
+                    addMenu.setContent(content);
+                    addMenu.setPosition(e.latLng);
+                    addMenu.open(map);
+                });
             }
 
             marker.addListener('click', function() {
@@ -122,6 +128,16 @@ function addMarker(lat, lng) {
         lng : lng,
     };
     dispatchEvent('addMarker', data);
+}
+
+function deleteMarker(id) {
+    angular.forEach(markers, function(marker) {
+        if (marker.id == id) {
+            marker.setMap(null);
+            return;
+        }
+    });
+    dispatchEvent('deleteMarker', id);
 }
 
 function more(locationId) {
