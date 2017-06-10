@@ -2,20 +2,24 @@
     height: 833px;
 }
 
-.btn.btn-success.pull-right, .btn.btn-warning.pull-right {
-    margin-top: -8px;
+.btn.btn-success.pull-right, .btn.btn-warning.pull-right, .btn.btn-default.show-radius {
+    margin-top: -2px;
     margin-left: 10px;
 }
 
-.form-control.search {
+.form-control.search, .form-control.km {
     margin-top: -8px;
     width: 200px;
     display: inline;
     margin-left: 10px;
 }
+.form-control.km {
+    width: 70px;
+}
 
 .panel-heading.main {
     padding-bottom: 2px;
+    padding-top: 4px;
 }
 
 .panel-body.map {

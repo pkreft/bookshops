@@ -1,5 +1,5 @@
 var locations = null,
-    mapScriptReady = false
+    mapScriptReady = false;
 
 document.addEventListener('locationsFetchedEvent', function(event) {
     locations = event.data;
@@ -14,7 +14,9 @@ function mapsLoaded() {
 var map,
     markers = [],
     popupTemplate = angular.element(document).find('pre').html(),
-    markerCluster;
+    markerCluster,
+    showClosest = false;
+
 function initMap() {
     if (locations && mapScriptReady) {
         if (!map) {
@@ -27,6 +29,12 @@ function initMap() {
         }
         var auth = locations.auth;
         delete locations.auth;
+
+        map.addListener('click', function(e) {
+            if (showClosest) {
+                showClosestMarkers(e.latLng);
+            }
+        });
 
         angular.forEach(locations, function(location) {
             var infoWindow = new google.maps.InfoWindow({
@@ -64,6 +72,11 @@ function clearMarkers() {
     markers = [];
 }
 
+function refreshMarkers() {
+    markerCluster.clearMarkers();
+    markerCluster.addMarkers(markers);
+}
+
 function renderTemplate(location) {
     var template = popupTemplate
         .replace('[%name]', location.name)
@@ -97,4 +110,56 @@ function dispatchEvent(name, data) {
     event.data = data;
 
     document.dispatchEvent(event);
+}
+
+var circle,
+    km = 5 * 1000;
+function showClosestMarkers(referencePosition) {
+    if (circle) {
+        circle.setMap(null);
+        circle = null;
+    }
+    refreshMarkers();
+
+    circle = new google.maps.Circle({
+        center: referencePosition,
+        radius: km,
+        clickable: false,
+        map: map,
+        fillOpacity: 0.1,
+        strokeWeight: 1,
+    });
+
+    // if (circle) {
+    //     map.fitBounds(circle.getBounds());
+    // }
+    angular.forEach(markers, function (marker) {
+        var distance_from_location = google.maps.geometry.spherical.computeDistanceBetween(referencePosition, marker.position);
+        if (distance_from_location > km) {
+            markerCluster.removeMarker(marker);
+        }
+    });
+}
+
+function radius(button) {
+    if (showClosest) {
+        button.removeClass('active');
+        if (circle) {
+            circle.setMap(null);
+        }
+        refreshMarkers();
+        showClosest = false;
+    } else {
+        if (km) {
+            button.parent().removeClass('has-error');
+            button.addClass('active');
+            showClosest = true;
+        } else {
+            button.parent().addClass('has-error');
+        }
+    }
+}
+
+function updateKm(newKm) {
+    km = parseInt(newKm) * 1000;
 }
