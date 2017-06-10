@@ -57,9 +57,9 @@ app.controller("AppMapController",
         }
 
         /**
-         * @method dismissNewMarkers
+         * @method dismissChanges
          */
-        $scope.dismissNewMarkers = function() {
+        $scope.dismissChanges = function() {
             $scope.modifiedMarkers = [];
             dispatchLocationsFetchedEvent($scope.lastSuccessfulResponse);
         }
