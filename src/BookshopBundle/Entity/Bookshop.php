@@ -59,7 +59,7 @@ class Bookshop
 
     /**
      * @Exclude
-     * @ORM\OneToMany(targetEntity="BookshopBookRelation", mappedBy="bookshop", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="BookshopBookRelation", mappedBy="bookshop", cascade={"persist", "remove"})
      *
      * @var ArrayCollection
      */
